@@ -1,0 +1,81 @@
+{% load humanize %}
+
+
+<!-- component -->
+<div id="posts">
+    {% for post in posts %}
+    <div class="px-5 my-1 py-4 bg-white dark:bg-gray-800 shadow rounded-lg max-w-lg">
+      <div class="flex mb-4">
+        <img class="w-12 h-12 rounded-full" src="{{ post.author.socialaccount_set.all.0.get_avatar_url }}"/>
+        <div class="ml-2 mt-0.5">
+          <span class="block font-medium text-base leading-snug text-black dark:text-gray-100">u/{{ post.author }}</span>
+          <span class="block text-sm text-gray-500 dark:text-gray-400 font-light leading-snug">{{ post.created_on }}</span>
+        </div>
+      </div>
+      <div hx-boost="true"><a href="{% url 'post_detail' post.id %}" class="text-gray-800 dark:text-gray-100 break-all leading-snug md:leading-normal">{{ post.content }}</a></div>
+      <div class="flex justify-between items-center mt-5">
+      <div class="flex items-center">
+        
+        {% if request.user in post.likes.all %}
+          <button class="block  hover:text-gray-600 fade-me-out"
+              hx-post="{% url 'dislike_post' post.id %}"
+              hx-target="#posts"
+              hx-swap="outerHTML">
+              <svg class="w-7 h-7 inline-block ml-2 mx-1 px-1 my-1 cursor-pointer rounded-full bg-red-100 text-red-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
+          </button>
+        {% else %}
+          <button class="block  hover:text-gray-600 fade-me-out"
+              hx-post="{% url 'like_post' post.id %}"
+              hx-target="#posts"
+              hx-swap="outerHTML">
+              <svg class="w-7 h-7 inline-block ml-2 mx-1 px-1 my-1 cursor-pointer rounded-full hover:bg-red-100 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+          </button>
+        {% endif %}
+
+        <a class="text-md">
+          {{ post.likes.count }}
+        </a>
+
+        {% if request.user in post.favourite.all %}
+          <button class="block  hover:text-gray-600 fade-me-out"
+              hx-post="{% url 'distroy_favourite' post.id %}"
+              hx-target="#posts"
+              hx-swap="outerHTML">
+              <svg class="w-7 h-7 inline-block ml-2 mx-1 px-1 my-1 cursor-pointer rounded-full bg-indigo-100 text-indigo-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"></path></svg>
+            </button>
+        {% else %}
+          <button class="block  hover:text-gray-600 fade-me-out"
+              hx-post="{% url 'favourite' post.id %}"
+              hx-target="#posts"
+              hx-swap="outerHTML">
+              <svg class="w-7 h-7 inline-block ml-2 mx-1 px-1 my-1 cursor-pointer rounded-full hover:bg-indigo-100 hover:text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>  
+          </button>
+        {% endif %}
+
+        <a class="text-md">
+          {{ post.favourite.count }}
+        </a>
+          
+        {% if post.author == request.user %}
+
+          <a class="block  hover:text-gray-600 fade-me-out"
+            hx-delete="{% url 'delete_post' post.id %}"
+            hx-target="#posts"
+            hx-swap="outerHTML">
+            <svg class="w-6 h-6 inline-block ml-2 px-1 my-1 cursor-pointer rounded-full bg-red-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+          </a>
+
+        {% endif %}
+
+      </div>  
+      <!--<div class="ml-1 text-gray-500 dark:text-gray-400 font-light">33 comments</div>-->
+      </div>
+    </div>
+    {% empty %}
+    <p class="text-center mt-52 font-bold">__Yumpty__</p>
+    {% endfor %}
+</div>
+
+
+
+

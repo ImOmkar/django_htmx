@@ -1,0 +1,15 @@
+{% load widget_tweaks %}
+
+<form 
+      id="#todo"
+      hx-post="{% url 'create_post' %}"
+      hx-target="body" 
+      >
+    {% csrf_token %}
+    {% render_field form.content class="w-full h-40 rounded-lg shadow-md border-gray-200 font-medium" placeholder="your thoughts..." %}
+  
+    <!--<input type="submit" class="px-3 w-full cursor-pointer py-2 rounded-lg bg-indigo-500 text-white my-2" value="Boom">-->
+    <button class="px-3 w-50 float-right cursor-pointer py-2 rounded-lg bg-indigo-500 text-white my-2" type="submit">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+    </button>
+</form>
