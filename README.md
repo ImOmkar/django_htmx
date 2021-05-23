@@ -1,7 +1,7 @@
 # django-htmx
  Django + allauth + Tailwind + HTMX 
 
-![alt text](https://github.com/ImOmkar/django_htmx/blob/main/Django%20-%20HTMX.gif | width=100)
+![alt text](https://github.com/ImOmkar/django_htmx/blob/main/Django%20-%20HTMX.gif)
 
 ## Packages:
 
