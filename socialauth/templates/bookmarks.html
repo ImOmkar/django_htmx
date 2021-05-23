@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+
+<p hx-boost="true" class="mx-1 mt-1 -mb-2 cursor-pointer">
+    <a href="{% url 'home' %}">
+      <svg class="w-8 h-8 inline-block px-1 py-1 hover:bg-gray-100 rounded-full focus:outline-none focus:bg-gray-100 focus:shadow focus:border" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"></path></svg>
+    </a>    
+</p>
+
+<div class="flex flex-wrap -mx-1 overflow-y-scroll">
+
+    <div class="my-1 px-1 w-full overflow-hidden sm:w-full lg:w-1/2 xl:w-1/2">
+      <section class="text-gray-600 body-font mx-2 my-4">
+        <div class="container mx-auto">
+            <!-- component -->
+            <div id="posts">
+                {% for post in bookmarks %}
+                <div class="px-5 my-1 py-4 bg-white hover:bg-gray-100 cursor-pointer dark:bg-gray-800 shadow rounded-lg max-w-lg">
+                <div class="flex mb-4">
+                    <a href=""><img class="w-12 h-12 rounded-full" src="{{ post.author.socialaccount_set.all.0.get_avatar_url }}"/></a>
+                    <div class="ml-2 mt-0.5">
+                    <a href=""><span class="block font-medium text-base leading-snug text-black dark:text-gray-100">u/{{ post.author }}</span></a>
+                    <span class="block text-sm text-gray-500 dark:text-gray-400 font-light leading-snug">{{ post.created_on }}</span>
+                    </div>
+                </div>
+                <a hx-boost="true" href="{% url 'post_detail' post.id %}"><p class="text-gray-800 dark:text-gray-100 break-all leading-snug md:leading-normal">{{ post.content }}</p></a>
+                <div class="flex justify-between items-center mt-5">
+                <div class="flex items-center"> 
+
+                </div>  
+                <!--<div class="ml-1 text-gray-500 dark:text-gray-400 font-light">33 comments</div>-->
+                </div>
+                </div>
+                {% empty %}
+                <p class="text-center mt-20 font-bold">
+                    __Yumpty__
+                </p>
+                {% endfor %}
+            </div>
+        </div>
+      </section>
+    </div>
+  
+    <div class="my-1 px-1 w-1/2 overflow-hidden sm:w-full lg:w-1/2 xl:w-1/2">
+      
+    </div>
+  
+</div>    
+
+
+
+{% endblock content %}
+

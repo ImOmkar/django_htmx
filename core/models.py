@@ -9,7 +9,7 @@ class Post(models.Model):
     content = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
 
-    favourite = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='favourite', blank=True)
+    bookmark = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='bookmark', blank=True)
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='likes', blank=True)
 
     class Meta:

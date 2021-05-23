@@ -251,25 +251,6 @@
 													</span>
 												</a>
 											</li>
-											<li>
-												<a href="#"
-													class="flex items-start px-2 py-1 space-x-2 rounded-md hover:bg-gray-100">
-													<span class="block mt-1">
-														<svg class="w-6 h-6 text-gray-500"
-															xmlns="http://www.w3.org/2000/svg" fill="none"
-															viewBox="0 0 24 24" stroke="currentColor">
-															<path stroke-linecap="round" stroke-linejoin="round"
-																stroke-width="2"
-																d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-														</svg>
-													</span>
-													<span class="flex flex-col">
-														<span class="text-lg">Slack</span>
-														<span class="text-sm text-gray-400">Lorem ipsum, dolor sit amet
-															consectetur adipisicing elit.</span>
-													</span>
-												</a>
-											</li>
 										</ul>
 										<div
 											class="flex items-center justify-center p-4 text-blue-700 underline border-t">
@@ -296,10 +277,6 @@
 											<span class="text-gray-800">Options</span>
 										</div>
 										<ul class="flex flex-col p-2 my-2 space-y-1">
-											<li>
-												<a href="#"
-													class="block px-2 py-1 transition rounded-md hover:bg-gray-100">Link</a>
-											</li>
 											<li>
 												<a href="#"
 													class="block px-2 py-1 transition rounded-md hover:bg-gray-100">Another
@@ -346,10 +323,12 @@
 									</div>
 									{% endif %}
 									<ul class="flex flex-col p-2 my-2 space-y-1">
+										{% if request.user.is_authenticated %}
 										<li>
-											<a href="#"
-												class="block px-2 py-1 transition rounded-md hover:bg-gray-100">Link</a>
+											<a hx-boost="true" href="{% url 'bookmarks' %}"
+												class="block px-2 py-1 transition rounded-md hover:bg-gray-100">Bookmarks</a>
 										</li>
+										{% endif %}
 										<li>
 											<a href="#"
 												class="block px-2 py-1 transition rounded-md hover:bg-gray-100">Another

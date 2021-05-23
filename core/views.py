@@ -1,14 +1,13 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Post
-from django.urls import reverse
 from .forms import PostForm
-from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
 @login_required
 def home(request):
+
     form = PostForm()
 
     context = {
@@ -79,21 +78,28 @@ def dislike_post(request, id):
     return redirect('post_list')
 
 
-def favourite(request, id):
+def bookmark(request, id):
     post = get_object_or_404(Post, id=id)
-    if not post.favourite.filter(id=request.user.id).exists():
-        post.favourite.add(request.user)
+    if not post.bookmark.filter(id=request.user.id).exists():
+        post.bookmark.add(request.user)
     return redirect('post_list')
 
 
-def distroy_favourite(request, id):
+def distroy_bookmark(request, id):
     post = get_object_or_404(Post, id=id)
-    if post.favourite.filter(id=request.user.id).exists():
-        post.favourite.remove(request.user)
+    if post.bookmark.filter(id=request.user.id).exists():
+        post.bookmark.remove(request.user)
     return redirect('post_list')
 
 
 
+def fav_list(request):
+    user = request.user
+    bookmarks = user.bookmark.all()
+    context = {
+        'bookmarks': bookmarks
+    }
+    return render(request, 'bookmarks.html', context)
 
 
     
