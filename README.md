@@ -5,23 +5,23 @@
 
 ## Packages:
 
-#### django-allauth 
+### django-allauth 
 
-Source code - https://github.com/pennersr/django-allauth
-Documentation - https://django-allauth.readthedocs.io/en/latest/
+1. Source code - https://github.com/pennersr/django-allauth
+2. Documentation - https://django-allauth.readthedocs.io/en/latest/
 
-#### TailwindCSS 
+### TailwindCSS 
 
-TailwindCSS - https://tailwindcss.com/
+1. TailwindCSS - https://tailwindcss.com/
 
-1. django-tailwind 
- 1.1 Source code -https://github.com/timonweb/django-tailwind
- 1.2 Documentation -https://github.com/timonweb/django-tailwind
+2. django-tailwind 
+2. Source code -https://github.com/timonweb/django-tailwind
+2. Documentation -https://github.com/timonweb/django-tailwind
      
 
-#### HTMX
+### HTMX
 
-Website - https://htmx.org/
-Blog - https://www.mattlayman.com/blog/2021/how-to-htmx-django/
+1. https://htmx.org/
+2. Blog - https://www.mattlayman.com/blog/2021/how-to-htmx-django/
 
 
