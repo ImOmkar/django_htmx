@@ -1,0 +1,20 @@
+{% load widget_tweaks %}
+
+<p class="py-2">
+  Replying to <span class="font-bold">{{ post.author }}'s</span> post.
+</p>
+<form
+      hx-post="{% url 'create_comment' post.author.username post.id %}"
+      hx-target="body" 
+      >
+    {% csrf_token %}
+    {% render_field form.content class="w-full h-28 rounded-lg shadow-md border-gray-200 font-medium" placeholder="write here" %}
+    <div class="mx-auto my-1">
+      <button class="bg-gray-300 px-2 py-2 rounded-xl" type="submit">
+        <svg class="w-6 h-6  transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+      </button>
+    </div>
+</form>
+
+
+    

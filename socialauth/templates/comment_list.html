@@ -1,0 +1,74 @@
+<!-- component -->
+<div id="comment">
+  {% for comment in comments %}
+  <div class="font-sans  dark:bg-darker rounded-2xl w-full">
+    <div
+      class="
+        bg-white
+        dark:bg-darker
+        text-black
+        dark:text-gray-200
+        px-10  py-2 mt-4
+        antialiased
+        border-b
+        flex
+        w-full
+      "
+    >
+      <img
+        class="rounded-full h-8 w-8 mr-2 mt-1"
+        src="{{ comment.user.socialaccount_set.all.0.get_avatar_url }}"
+      />
+      <div>
+        <div class="bg-gray-100 w-full dark:bg-gray-700 rounded-3xl px-4 pt-2 pb-2.5">
+          <div class="font-semibold text-sm leading-relaxed">
+            {{ comment.user }}
+          </div>
+          <div class="text-normal leading-snug md:leading-normal">
+            {{ comment.content }}
+          </div>
+        </div>
+        <div class="text-sm dark:text-light font-thin text-gray-400">
+          {{ comment.timestamp }}
+        </div>
+        {% if comment.user == request.user %}
+
+        <a
+          class="block hover:text-gray-600 fade-me-out"
+          hx-delete="{% url 'delete_comment' post.author.username post.id comment.id %}"
+          hx-target="#comment"
+          hx-swap="outerHTML"
+        >
+          <svg
+            class="
+              w-6
+              h-6
+              inline-block
+              ml-2
+              px-1
+              my-1
+              cursor-pointer
+              rounded-full
+              bg-red-100
+            "
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            ></path>
+          </svg>
+        </a>
+
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+</div>

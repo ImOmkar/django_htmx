@@ -1,98 +1,193 @@
-{% extends 'base.html' %}
+{% extends 'base1.html' %}
 {% load humanize %}
 {% block content %}
 
-<p hx-boost="true" class="mx-1 mt-1 -mb-2 cursor-pointer">
-    <a href="{% url 'home' %}">
-      <svg class="w-8 h-8 inline-block px-1 py-1 hover:bg-gray-100 rounded-full focus:outline-none focus:bg-gray-100 focus:shadow focus:border" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"></path></svg>
-    </a>    
-</p>
-
-<div class="flex flex-wrap -mx-1 overflow-y-scroll">
-
-    <div class="my-1 px-1 w-full overflow-hidden sm:w-full lg:w-1/2 xl:w-1/2">
-      <section class="text-gray-600 body-font mx-2 my-4">
-        <div class="container mx-auto">
-            <!-- component -->
-            <div id="posts">
-                <div class="px-5 my-1 py-4 bg-white dark:bg-gray-800 shadow rounded-lg max-w-lg">
-                <div class="flex mb-4">
-                    <img class="w-12 h-12 rounded-full" src="{{ post.author.socialaccount_set.all.0.get_avatar_url }}"/>
-                    <div class="ml-2 mt-0.5">
-                    <span class="block font-medium text-base leading-snug text-black dark:text-gray-100">u/{{ post.author }}</span>
-                    <span class="block text-sm text-gray-500 dark:text-gray-400 font-light leading-snug">{{ post.created_on }}</span>
-                    </div>
-                </div>
-                <p class="text-gray-800 dark:text-gray-100 break-all leading-snug md:leading-normal">{{ post.content }}</p>
-                <div class="flex justify-between items-center mt-5">
-                <div class="flex items-center"> 
-
-                {% if request.user in post.likes.all %}
-                <button class="block  hover:text-gray-600 fade-me-out"
-                    hx-post="{% url 'dislike_post' post.id %}"
-                    hx-target="#posts"
-                    hx-swap="outerHTML">
-                    <svg class="w-7 h-7 inline-block ml-2 mx-1 px-1 my-1 cursor-pointer rounded-full bg-red-100 text-red-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
-                </button>
-                {% else %}
-                <button class="block  hover:text-gray-600 fade-me-out"
-                    hx-post="{% url 'like_post' post.id %}"
-                    hx-target="#posts"
-                    hx-swap="outerHTML">
-                    <svg class="w-7 h-7 inline-block ml-2 mx-1 px-1 my-1 cursor-pointer rounded-full hover:bg-red-100 hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                </button>
-                {% endif %}
-
-                {{ post.likes.count }}
-
-                {% if request.user in post.bookmark.all %}
-                <button class="block  hover:text-gray-600 fade-me-out"
-                    hx-post="{% url 'distroy_bookmark' post.id %}"
-                    hx-target="#posts"
-                    hx-swap="outerHTML">
-                    <svg class="w-7 h-7 inline-block ml-2 mx-1 px-1 my-1 cursor-pointer rounded-full bg-indigo-100 text-indigo-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"></path></svg>
-                    </button>
-                {% else %}
-                <button class="block  hover:text-gray-600 fade-me-out"
-                    hx-post="{% url 'bookmark' post.id %}"
-                    hx-target="#posts"
-                    hx-swap="outerHTML">
-                    <svg class="w-7 h-7 inline-block ml-2 mx-1 px-1 my-1 cursor-pointer rounded-full hover:bg-indigo-100 hover:text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>  
-                </button>
-                {% endif %}
-
-                <a class="text-md">
-                {{ post.bookmark.count }}
-                </a>
-
-                {% if post.author == request.user %}
-
-                <a class="block  hover:text-gray-600 fade-me-out"
-                    hx-delete="{% url 'delete_post' post.id %}"
-                    hx-target="#posts"
-                    hx-swap="outerHTML" 
-                    >
-                    <svg class="w-6 h-6 inline-block ml-2 px-1 my-1 cursor-pointer rounded-full bg-red-100" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                </a>
-
-                {% endif %}
-
-                </div>  
-                <!--<div class="ml-1 text-gray-500 dark:text-gray-400 font-light">33 comments</div>-->
-                </div>
-                </div>
-            </div>
+<!-- Component Start -->
+<div
+  class="
+    flex
+    justify-start
+    bg-white
+    dark:bg-darker
+    w-screen
+    h-screen
+    text-gray-700
+  "
+>
+  <div class="flex w-full max-w-screen-lg">
+    <div class="flex flex-col flex-grow border-l border-r border-gray-300">
+      <div
+        class="
+          flex
+          justify-between
+          flex-shrink-0
+          px-4
+          py-4
+          border-b border-gray-300
+        "
+      >
+        <div class="dark:text-light" hx-boost="true">
+          <a href="{% url 'home' %}">
+            <svg
+              class="w-10 h-10 inline-block p-2 rounded-full"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              ></path>
+            </svg>
+            Back
+          </a>
         </div>
-      </section>
-    </div>
-  
-    <div class="my-1 px-1 w-1/2 overflow-hidden sm:w-full lg:w-1/2 xl:w-1/2">
-      
-    </div>
-  
-</div>    
+      </div>
+      <div class="flex-grow h-0 overflow-auto">
 
+        <div hx-get="{% url 'post_instance' post.author.username post.id %}" hx-trigger="load">
+          
+        </div>
+
+        <div
+          hx-get="{% url 'comment_list' post.author.username post.id %}"
+          hx-trigger="load delay:1s"
+        ></div>
+      </div>
+    </div>
+
+    <div
+      class="
+        flex flex-col
+        md:block
+        lg:block
+        hidden
+        flex-shrink-0
+        w-1/4
+        py-4
+        pl-4
+      "
+    >
+      <input
+        class="flex items-center h-8 px-2 border border-gray-500 rounded-sm"
+        type="search"
+        placeholder="Search…"
+      />
+      <div>
+        <h3 class="mt-6 font-semibold">Trending</h3>
+        <div class="flex w-full py-4 border-b border-gray-300">
+          <span class="flex-shrink-0 w-10 h-10 bg-gray-400 rounded-full"></span>
+          <div class="flex flex-col flex-grow ml-2">
+            <div class="flex text-sm">
+              <span class="font-semibold">Username</span>
+              <span class="ml-1">@username</span>
+            </div>
+            <p class="mt-1 text-sm">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, et dolore
+              magna aliqua. <a class="underline" href="#">#hashtag</a>
+            </p>
+          </div>
+        </div>
+        <div class="flex w-full py-4 border-b border-gray-300">
+          <span class="flex-shrink-0 w-10 h-10 bg-gray-400 rounded-full"></span>
+          <div class="flex flex-col flex-grow ml-2">
+            <div class="flex text-sm">
+              <span class="font-semibold">Username</span>
+              <span class="ml-1">@username</span>
+            </div>
+            <p class="mt-1 text-sm">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, et dolore
+              magna aliqua. <a class="underline" href="#">#hashtag</a>
+            </p>
+          </div>
+        </div>
+        <div class="flex w-full py-4 border-b border-gray-300">
+          <span class="flex-shrink-0 w-10 h-10 bg-gray-400 rounded-full"></span>
+          <div class="flex flex-col flex-grow ml-2">
+            <div class="flex text-sm">
+              <span class="font-semibold">Username</span>
+              <span class="ml-1">@username</span>
+            </div>
+            <p class="mt-1 text-sm">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, et dolore
+              magna aliqua. <a class="underline" href="#">#hashtag</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Component End  -->
+
+<div x-data="{ imgModal : false, imgModalSrc : '', imgModalDesc : '' }">
+  <template
+    @img-modal.window="imgModal = true; imgModalSrc = $event.detail.imgModalSrc; imgModalDesc = $event.detail.imgModalDesc;"
+    x-if="imgModal"
+  >
+    <div
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0 transform scale-90"
+      x-transition:enter-end="opacity-100 transform scale-100"
+      x-transition:leave="transition ease-in duration-300"
+      x-transition:leave-start="opacity-100 transform scale-100"
+      x-transition:leave-end="opacity-0 transform scale-90"
+      x-on:click.away="imgModalSrc = ''"
+      class="
+        p-2
+        fixed
+        w-full
+        h-100
+        inset-0
+        z-50
+        overflow-hidden
+        flex
+        justify-center
+        items-center
+        bg-black bg-opacity-75
+      "
+    >
+      <div
+        @click.away="imgModal = ''"
+        class="flex flex-col max-w-3xl max-h-full overflow-auto"
+      >
+        <div class="z-50">
+          <button
+            @click="imgModal = ''"
+            class="float-right pt-2 pr-2 outline-none focus:outline-none"
+          >
+            <svg
+              class="fill-current text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+            >
+              <path
+                d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        <div class="p-2">
+          <img
+            :alt="imgModalSrc"
+            class="font-semibold w-full h-full object-cover rounded-lg mx-1"
+            :src="imgModalSrc"
+          />
+          <p x-text="imgModalDesc" class="text-center text-white"></p>
+        </div>
+      </div>
+    </div>
+  </template>
+</div>
+
+<div id="ex1" class="modal">{% include 'create_post.html' %}</div>
+
+<div id="comment_form" class="modal">{% include 'create_comment.html' %}</div>
 
 
 {% endblock content %}
-

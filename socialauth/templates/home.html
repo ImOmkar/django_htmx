@@ -1,34 +1,142 @@
-{% extends 'base.html' %}
+{% extends 'base1.html' %}
 {% load humanize %}
 {% block content %}
 
 
-<div class="flex flex-wrap -mx-1 overflow-y-scroll">
 
-  <div class="my-1 px-1 w-full overflow-hidden sm:w-full lg:w-1/2 xl:w-1/2">
-    <section hx-get="{% url 'post_list' %}" hx-trigger="load" class="text-gray-600 body-font mx-2 my-4">
-      <div class="container px-5 py-24 mx-auto">
-          
-      </div>
-    </section>
-  </div>
+<style>
 
-  <div class="my-1 px-1 w-1/2 overflow-hidden sm:w-full lg:w-1/2 xl:w-1/2">
-    
-  </div>
+@media(max-width:767px) {
+	.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1050;
+  display: none;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}
+}
+</style>
 
+
+
+<!-- Component Start -->
+<div class="flex justify-start bg-white dark:bg-darker w-screen h-screen text-gray-700">
+	<div class="flex w-full max-w-screen-lg">
+		<div class="flex flex-col flex-grow border-l border-r border-gray-300">
+			<div class="flex items-center justify-between flex-shrink-0 px-4 py-2 border-b border-gray-300">
+				<h1 class="text-xl font-semibold dark:text-light">
+					<svg class="w-6 h-6 inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 5.757v8.486zM16 18H9.071l6-6H16a2 2 0 012 2v2a2 2 0 01-2 2z" clip-rule="evenodd"></path></svg>
+					Feed
+				</h1>
+				{% if user.is_authenticated %}
+				<a href="#ex1" rel="modal:open" class="hidden md:block lg:block dark:text-light border px-4 py-2">
+					<svg class="w-6 h-6 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+					New post
+				</a>
+				{% else %}
+				<a href="#create_post" rel="modal:open" class="hidden md:block lg:block dark:text-light border px-4 py-2">
+					<svg class="w-6 h-6 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+					New post
+				</a>
+				{% endif %}
+			</div>
+			<div class="flex-grow h-0 overflow-auto">
+			<div hx-get="{% url 'post_list' %}" hx-trigger="load">
+
+			</div>
+
+			</div>
+		</div>
+
+
+		<div class="flex flex-col md:block lg:block hidden flex-shrink-0 w-1/4 py-4 pl-4">
+			<input class="flex items-center h-8 px-2 border border-gray-500 rounded-sm" type="search" Placeholder="Search…">
+			<div>
+				<h3 class="mt-6 font-semibold">Trending</h3>
+				<div class="flex w-full py-4 border-b border-gray-300">
+					<span class="flex-shrink-0 w-10 h-10 bg-gray-400 rounded-full"></span>
+					<div class="flex flex-col flex-grow ml-2">
+						<div class="flex text-sm">
+							<span class="font-semibold">Username</span>
+							<span class="ml-1">@username</span>
+						</div>
+						<p class="mt-1 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, et dolore magna aliqua. <a class="underline" href="#">#hashtag</a></p>
+					</div>
+				</div>
+				<div class="flex w-full py-4 border-b border-gray-300">
+					<span class="flex-shrink-0 w-10 h-10 bg-gray-400 rounded-full"></span>
+					<div class="flex flex-col flex-grow ml-2">
+						<div class="flex text-sm">
+							<span class="font-semibold">Username</span>
+							<span class="ml-1">@username</span>
+						</div>
+						<p class="mt-1 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, et dolore magna aliqua. <a class="underline" href="#">#hashtag</a></p>
+					</div>
+				</div>
+				<div class="flex w-full py-4 border-b border-gray-300">
+					<span class="flex-shrink-0 w-10 h-10 bg-gray-400 rounded-full"></span>
+					<div class="flex flex-col flex-grow ml-2">
+						<div class="flex text-sm">
+							<span class="font-semibold">Username</span>
+							<span class="ml-1">@username</span>
+						</div>
+						<p class="mt-1 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, et dolore magna aliqua. <a class="underline" href="#">#hashtag</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
+<!-- Component End  -->
 
+{% if user.is_authenticated %}
+<a href="#ex1" rel="modal:open" class="fixed flex items-center justify-center md:hidden lg:hidden block bg-blue-600 rounded-full bottom-8 right-4 mr-4 mb-4 shadow-lg text-blue-100 hover:bg-blue-600" target="_top">
+	<div class="flex items-center justify-center h-16 w-16 rounded-full">
+		<svg class="w-7 h-7" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+	</div>
+</a>
+{% else %}
+<a href="#create_post" rel="modal:open" class="fixed flex items-center justify-center md:hidden lg:hidden block bg-blue-600 rounded-full bottom-8 right-4 mr-4 mb-4 shadow-lg text-blue-100 hover:bg-blue-600" target="_top">
+	<div class="flex items-center justify-center h-16 w-16 rounded-full">
+		<svg class="w-7 h-7" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+	</div>
+</a>
+{% endif %}
 
 
 <div id="ex1" class="modal">
   {% include 'create_post.html' %}
+ 
 </div>
 
 
 
-
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<div x-data="{ imgModal : false, imgModalSrc : '', imgModalDesc : '' }">
+<template @img-modal.window="imgModal = true; imgModalSrc = $event.detail.imgModalSrc; imgModalDesc = $event.detail.imgModalDesc;" x-if="imgModal">
+	<div x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-90" x-on:click.away="imgModalSrc = ''" class="p-2 fixed w-full h-100 inset-0 z-50 overflow-hidden flex justify-center items-center bg-black bg-opacity-75">
+	<div @click.away="imgModal = ''" class="flex flex-col max-w-3xl max-h-full overflow-auto">
+		<div class="z-50">
+		<button @click="imgModal = ''" class="float-right pt-2 pr-2 outline-none focus:outline-none">
+			<svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+			<path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z">
+			</path>
+			</svg>
+		</button>
+		</div>
+		<div class="p-2">
+		<img :alt="imgModalSrc" class="font-semibold w-full h-full object-cover rounded-lg mx-1" :src="imgModalSrc">
+		<p x-text="imgModalDesc" class="text-center text-white"></p>
+		</div>
+	</div>
+	</div>
+</template>
+</div>
 
 
 {% endblock content %}

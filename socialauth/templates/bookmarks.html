@@ -1,19 +1,113 @@
-{% extends 'base.html' %}
+{% extends 'base1.html' %}
 {% load humanize %}
 {% block content %}
 
-<p hx-boost="true" class="mx-1 mt-1 -mb-2 cursor-pointer">
-    <a href="{% url 'home' %}">
-      <svg class="w-8 h-8 inline-block px-1 py-1 hover:bg-gray-100 rounded-full focus:outline-none focus:bg-gray-100 focus:shadow focus:border" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"></path></svg>
-    </a>    
-</p>
 
-<div class="flex flex-wrap -mx-1 overflow-y-scroll">
+<!-- Component Start -->
+<div class="flex justify-start bg-white dark:bg-darker w-screen h-screen text-gray-700">
+	<div class="flex w-full max-w-screen-lg">
+		<div class="flex flex-col flex-grow border-l border-r border-gray-300">
+			<div class="flex items-center justify-between flex-shrink-0 px-4 py-2 border-b border-gray-300">
+				<h1 class="text-xl font-semibold dark:text-light">
+          <svg class="w-6 h-6 inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"></path></svg>
+          Bookmarks
+        </h1>
+				<a href="#ex1" rel="modal:open" class="hidden md:block lg:block dark:text-light border px-4 py-2">
+					<svg class="w-6 h-6 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+					New post
+				</a>
+			</div>
+			<div class="flex-grow h-0 overflow-auto">
+        
+        {% for post in bookmarks %}
+        <div class="flex w-full p-8 border-b border-gray-300">
+          <img class="flex-shrink-0 w-12 h-12 bg-gray-400 rounded-full" src="{{ post.author.socialaccount_set.all.0.get_avatar_url }}" alt="">
+            <div class="flex flex-col flex-grow ml-4">
+              <div class="flex dark:text-light">
+                <span class="font-semibold">{{ post.author }}</span>
+                <span class="ml-1">@{{ post.author }}</span>
+              </div>
+              <a hx-boost="true" href="{% url 'post_detail' post.author.username post.id %}"><p class="break-words mt-1 dark:text-light my-2">{{ post.content }}</p>
+              {% for image in post.images_set.all %}
+              <div class="flex items-center justify-center">
+                <img class="font-semibold w-full h-full object-cover rounded-3xl" src="{{ image.image.url }}" alt="{{ post.content }}">
+              </div>
+              {% empty %}
+              {% endfor %}
+              </a>
+              <p class="text-sm dark:text-light font-thin mt-3 text-gray-400">{{ post.created_on }}</p>
+          </div>
+        </div>
+        {% empty %}
+        <p class="text-center mt-20">WOW, Such empty</p>
+        {% endfor %}
+
+			</div>
+		</div>
+
+
+		<div class="flex flex-col md:block lg:block hidden flex-shrink-0 w-1/4 py-4 pl-4">
+			<input class="flex items-center h-8 px-2 border border-gray-500 rounded-sm" type="search" Placeholder="Search…">
+			<div>
+				<h3 class="mt-6 font-semibold">Trending</h3>
+				<div class="flex w-full py-4 border-b border-gray-300">
+					<span class="flex-shrink-0 w-10 h-10 bg-gray-400 rounded-full"></span>
+					<div class="flex flex-col flex-grow ml-2">
+						<div class="flex text-sm">
+							<span class="font-semibold">Username</span>
+							<span class="ml-1">@username</span>
+						</div>
+						<p class="mt-1 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, et dolore magna aliqua. <a class="underline" href="#">#hashtag</a></p>
+					</div>
+				</div>
+				<div class="flex w-full py-4 border-b border-gray-300">
+					<span class="flex-shrink-0 w-10 h-10 bg-gray-400 rounded-full"></span>
+					<div class="flex flex-col flex-grow ml-2">
+						<div class="flex text-sm">
+							<span class="font-semibold">Username</span>
+							<span class="ml-1">@username</span>
+						</div>
+						<p class="mt-1 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, et dolore magna aliqua. <a class="underline" href="#">#hashtag</a></p>
+					</div>
+				</div>
+				<div class="flex w-full py-4 border-b border-gray-300">
+					<span class="flex-shrink-0 w-10 h-10 bg-gray-400 rounded-full"></span>
+					<div class="flex flex-col flex-grow ml-2">
+						<div class="flex text-sm">
+							<span class="font-semibold">Username</span>
+							<span class="ml-1">@username</span>
+						</div>
+						<p class="mt-1 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, et dolore magna aliqua. <a class="underline" href="#">#hashtag</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Component End  -->
+
+<a href="#ex1" rel="modal:open" class="fixed flex items-center justify-center md:hidden lg:hidden block bg-blue-600 rounded-full bottom-8 right-4 mr-4 mb-4 shadow-lg text-blue-100 hover:bg-blue-600" target="_top">
+	<div class="flex items-center justify-center h-16 w-16 rounded-full">
+		<svg class="w-7 h-7" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+	</div>
+</a>
+
+
+<div id="ex1" class="modal">
+  {% include 'create_post.html' %}
+</div>
+
+
+
+
+{% endblock content %}
+
+<!--<div class="flex flex-wrap -mx-1 overflow-y-scroll">
 
     <div class="my-1 px-1 w-full overflow-hidden sm:w-full lg:w-1/2 xl:w-1/2">
       <section class="text-gray-600 body-font mx-2 my-4">
         <div class="container mx-auto">
-            <!-- component -->
+
             <div id="posts">
                 {% for post in bookmarks %}
                 <div class="px-5 my-1 py-4 bg-white hover:bg-gray-100 cursor-pointer dark:bg-gray-800 shadow rounded-lg max-w-lg">
@@ -24,12 +118,12 @@
                     <span class="block text-sm text-gray-500 dark:text-gray-400 font-light leading-snug">{{ post.created_on }}</span>
                     </div>
                 </div>
-                <a hx-boost="true" href="{% url 'post_detail' post.id %}"><p class="text-gray-800 dark:text-gray-100 break-all leading-snug md:leading-normal">{{ post.content }}</p></a>
+                <a hx-boost="true" href="{% url 'post_detail' post.author.username post.id %}"><p class="text-gray-800 dark:text-gray-100 break-all leading-snug md:leading-normal">{{ post.content }}</p></a>
                 <div class="flex justify-between items-center mt-5">
                 <div class="flex items-center"> 
 
                 </div>  
-                <!--<div class="ml-1 text-gray-500 dark:text-gray-400 font-light">33 comments</div>-->
+
                 </div>
                 </div>
                 {% empty %}
@@ -46,9 +140,4 @@
       
     </div>
   
-</div>    
-
-
-
-{% endblock content %}
-
+</div>-->    

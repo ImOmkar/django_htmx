@@ -60,16 +60,13 @@ TAILWIND_APP_NAME = 'socialauth'
 
 #ACCOUNT_LOGOUT_ON_POST = True 
 
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
-
 
 NPM_BIN_PATH = r"C:/Program Files/nodejs/npm.cmd"
 
 SITE_ID = 2
 
 LOGIN_REDIRECT_URL = '/'
+
 
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -176,6 +173,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#to manage uploaded medias
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

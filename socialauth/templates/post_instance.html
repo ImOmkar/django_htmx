@@ -1,0 +1,286 @@
+{% load humanize %}
+
+<div id="post_instance">
+  <div class="flex w-full p-8 border-b border-gray-300">
+    <img
+      class="flex-shrink-0 w-12 h-12 bg-gray-400 rounded-full"
+      src="{{ post.author.socialaccount_set.all.0.get_avatar_url }}"
+      alt=""
+    />
+    <div class="flex flex-col flex-grow ml-4">
+      <div class="flex dark:text-light">
+        <span class="font-semibold">{{ post.author }}</span>
+        <span class="ml-1">@{{ post.author }}</span>
+      </div>
+      <p class="break-words mt-1 dark:text-light my-2">{{ post.content }}</p>
+
+      <div class="flex items-center justify-center">
+        {% for image in post.images_set.all %}
+        <a
+          @click="$dispatch('img-modal', {  imgModalSrc: '{{ image.image.url }}', imgModalDesc: '{{ image.post.content }}' })"
+        >
+          <img
+            class="
+              transition
+              duration-150
+              ease-in
+              transform
+              hover:-translate-y-1 hover:scale-110
+              font-semibold
+              w-full
+              h-48
+              object-cover
+              rounded-lg
+              px-1
+              cursor-pointer
+            "
+            src="{{ image.image.url }}"
+            alt="{{ post.content }}"
+            data-lightbox="image-1"
+            data-title="My caption"
+          />
+        </a>
+        {% empty %} 
+        {% endfor %}
+      </div>
+
+      <p class="text-sm dark:text-light font-thin mt-3 text-gray-400">
+        {{ post.created_on }}
+      </p>
+
+      <div class="flex items-center justify-start dark:text-light mt-2">
+        <a
+          href="#comment_form" rel="modal:open"
+          class="text-md mx-1"
+        >
+          <svg
+            class="
+              w-7
+              h-7
+              inline-block
+              ml-2
+              px-1
+              my-1
+              rounded-full
+              hover:bg-green-100 hover:text-green-500
+            "
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+            ></path>
+          </svg>
+          {{ post.comment_set.count }}
+        </a>
+
+        <div>
+          {% if request.user.is_authenticated %} 
+          {% if request.user in post.likes.all %}
+          <button
+            class="block hover:text-gray-600 dislike fade-me-out mx-1"
+            hx-post="{% url 'post_detail_dislike' post.author.username post.id %}"
+            hx-target="div"
+            hx-swap="outerHTML"
+          >
+            <svg
+              class="
+                w-7
+                h-7
+                inline-block
+                mx-1
+                px-1
+                my-1
+                cursor-pointer
+                rounded-full
+                bg-red-100
+                text-red-500
+              "
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </button>
+          {% else %}
+          <button
+            class="block hover:text-gray-600 like fade-me-out mx-1"
+            hx-post="{% url 'post_detail_like' post.author.username post.id %}"
+            hx-target="div"
+            hx-swap="outerHTML"
+          >
+            <svg
+              class="
+                w-7
+                h-7
+                inline-block
+                mx-1
+                px-1
+                my-1
+                cursor-pointer
+                rounded-full
+                hover:bg-red-100 hover:text-red-500
+              "
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              ></path>
+            </svg>
+          </button>
+          {% endif %} 
+          {% else %}
+          <a
+            href="#like"
+            rel="modal:open"
+            class="block hover:text-gray-600 like fade-me-out"
+          >
+            <svg
+              class="
+                w-7
+                h-7
+                inline-block
+                ml-2
+                mx-1
+                px-1
+                my-1
+                cursor-pointer
+                rounded-full
+                hover:bg-red-100 hover:text-red-500
+              "
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+              ></path>
+            </svg>
+          </a>
+          {% endif %}
+        </div>
+
+        <a class="text-md"> {{ post.likes.count }} </a>
+
+        {% if request.user.is_authenticated %} 
+        {% if request.user in post.bookmark.all %}
+        <button
+          class="block hover:text-gray-600 rem_bookmark fade-me-out"
+          hx-post="{% url 'post_detail_distroy_bookmark' post.author.username post.id %}"
+          hx-target="div"
+          hx-swap="outerHTML"
+        >
+          <svg
+            class="
+              w-7
+              h-7
+              inline-block
+              ml-2
+              mx-1
+              px-1
+              my-1
+              cursor-pointer
+              rounded-full
+              bg-indigo-100
+              text-indigo-500
+            "
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"></path>
+          </svg>
+        </button>
+        {% else %}
+        <button
+          class="block hover:text-gray-600 bookmarked fade-me-out"
+          hx-post="{% url 'post_detail_bookmark' post.author.username post.id %}"
+          hx-target="div"
+          hx-swap="outerHTML"
+        >
+          <svg
+            class="
+              w-7
+              h-7
+              inline-block
+              ml-2
+              mx-1
+              px-1
+              my-1
+              cursor-pointer
+              rounded-full
+              hover:bg-indigo-100 hover:text-indigo-500
+            "
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+            ></path>
+          </svg>
+        </button>
+        {% endif %} 
+        {% else %}
+        <a
+          href="#bookmark"
+          rel="modal:open"
+          class="block hover:text-gray-600 bookmarked fade-me-out"
+        >
+          <svg
+            class="
+              w-7
+              h-7
+              inline-block
+              ml-2
+              mx-1
+              px-1
+              my-1
+              cursor-pointer
+              rounded-full
+              hover:bg-indigo-100 hover:text-indigo-500
+            "
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+            ></path>
+          </svg>
+        </a>
+        {% endif %}
+
+        <a class="text-md"> {{ post.bookmark.count }} </a>
+      </div>
+    </div>
+  </div>
+</div>
