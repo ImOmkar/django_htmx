@@ -85,7 +85,7 @@
           <button
             class="block hover:text-gray-600 dislike fade-me-out mx-1"
             hx-post="{% url 'post_detail_dislike' post.author.username post.id %}"
-            hx-target="div"
+            hx-target="#post_instance"
             hx-swap="outerHTML"
           >
             <svg
@@ -116,7 +116,7 @@
           <button
             class="block hover:text-gray-600 like fade-me-out mx-1"
             hx-post="{% url 'post_detail_like' post.author.username post.id %}"
-            hx-target="div"
+            hx-target="#post_instance"
             hx-swap="outerHTML"
           >
             <svg
@@ -187,7 +187,7 @@
         <button
           class="block hover:text-gray-600 rem_bookmark fade-me-out"
           hx-post="{% url 'post_detail_distroy_bookmark' post.author.username post.id %}"
-          hx-target="div"
+          hx-target="#post_instance"
           hx-swap="outerHTML"
         >
           <svg
@@ -215,7 +215,7 @@
         <button
           class="block hover:text-gray-600 bookmarked fade-me-out"
           hx-post="{% url 'post_detail_bookmark' post.author.username post.id %}"
-          hx-target="div"
+          hx-target="#post_instance"
           hx-swap="outerHTML"
         >
           <svg

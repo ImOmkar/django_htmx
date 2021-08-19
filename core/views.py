@@ -178,14 +178,14 @@ def post_detail_like(request, id, **kwargs):
     post = get_object_or_404(Post, id=id, author__username=kwargs['username'])
     if not post.likes.filter(id=request.user.id).exists():
         post.likes.add(request.user)
-    return redirect('post_detail', username=kwargs['username'], id=id)
+    return redirect('post_instance', username=kwargs['username'], id=id)
 
 @login_required
 def post_detail_dislike(request, id, **kwargs):
     post = get_object_or_404(Post, id=id, author__username=kwargs['username'])
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)
-    return redirect('post_detail', username=kwargs['username'], id=id)
+    return redirect('post_instance', username=kwargs['username'], id=id)
 
 
 #bookmark/distroy to detail feed
@@ -194,11 +194,12 @@ def post_detail_bookmark(request, id, **kwargs):
     post = get_object_or_404(Post, id=id, author__username=kwargs['username'])
     if not post.bookmark.filter(id=request.user.id).exists():
         post.bookmark.add(request.user)
-    return redirect('post_detail', username=kwargs['username'], id=id)
+    return redirect('post_instance', username=kwargs['username'], id=id)
 
 @login_required
 def post_detail_distroy_bookmark(request, id, **kwargs):
     post = get_object_or_404(Post, id=id, author__username=kwargs['username'])
     if post.bookmark.filter(id=request.user.id).exists():
         post.bookmark.remove(request.user)
-    return redirect('post_detail', username=kwargs['username'], id=id)
+    return redirect('post_instance', username=kwargs['username'], id=id)
+

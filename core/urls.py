@@ -1,7 +1,9 @@
 from django.urls import path
 from .views import (home, 
                     post_list, 
+
                     delete_post, 
+
                     create_post, 
                     like_post, 
                     dislike_post,
